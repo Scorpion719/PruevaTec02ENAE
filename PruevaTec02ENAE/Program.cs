@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using PruevaTec02ENAE.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<Producto2Context>(options =>
+      options.UseSqlServer(builder.Configuration.GetConnectionString("Cnn")));
 
 var app = builder.Build();
 
