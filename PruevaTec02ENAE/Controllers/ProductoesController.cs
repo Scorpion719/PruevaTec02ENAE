@@ -47,7 +47,7 @@ namespace PruevaTec02ENAE.Controllers
         // GET: Productoes/Create
         public IActionResult Create()
         {
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "CategoriaId");
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace PruevaTec02ENAE.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "CategoriaId", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
@@ -81,7 +81,7 @@ namespace PruevaTec02ENAE.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "CategoriaId", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
@@ -117,7 +117,7 @@ namespace PruevaTec02ENAE.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "CategoriaId", producto.CategoriaId);
+            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId);
             return View(producto);
         }
 
