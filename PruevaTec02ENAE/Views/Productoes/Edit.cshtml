@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
 <h4>Producto</h4>
 <hr />
@@ -30,18 +30,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Imagen" class="control-label"></label>
-                <input type ="file" id="fileImagen" onchange="mostrarVistaPrevia()" accept="image/*" asp-for="Imagen" class="form-control" />
+                <input type="file" id="fileImagen" onchange="mostrarVistaPrevia()" accept="image/*" accept="image/*" asp-for="Imagen" class="form-control" />
                 <span asp-validation-for="Imagen" class="text-danger"></span>
             </div>
             <div>
                 @if (Model.Imagen != null && Model.Imagen.Length > 0)
                 {
-                    <!-- Muestra la imagen actual si existe -->
                     <img class="bloque d mx-auto redondeado" src="data:image/jpg;base64,@(Convert.ToBase64String(Model.Imagen))" width="75" height="75">
                 }
                 else
                 {
-                    <!-- Muestra una imagen predeterminada si no hay imagen actual -->
                     <img id="imagenPrevia" src="~/img/default.jpg" alt="Vista previa de la imagen" style="max-width: 200px; max-height: 200px;">
                 }
             </div>
@@ -51,14 +49,14 @@
                 <span asp-validation-for="CategoriaId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input class="btn btn-primary" type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-success" asp-action="Index">Ver lista</a>
 </div>
 
 @section Scripts {

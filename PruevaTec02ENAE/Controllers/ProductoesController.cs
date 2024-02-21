@@ -121,18 +121,16 @@ namespace PruevaTec02ENAE.Controllers
             else
             {
                 var registroFind = await _context.Productos.FirstOrDefaultAsync(s => s.ProductoId == producto.ProductoId);
-
                 if (registroFind?.Imagen?.Length > 0)
                     producto.Imagen = registroFind.Imagen;
-
                 registroFind.Nombre = producto.Nombre;
                 registroFind.Precio = producto.Precio;
                 registroFind.Descripcion = producto.Descripcion;
                 registroFind.CategoriaId = producto.CategoriaId;
-
                 _context.Update(registroFind);
                 await _context.SaveChangesAsync();
             }
+            
             return RedirectToAction(nameof(Index));
             //if (ModelState.IsValid)
             //{
@@ -191,6 +189,14 @@ namespace PruevaTec02ENAE.Controllers
                 _context.Productos.Remove(producto);
             }
             
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+        public async Task<IActionResult> DeleteImagen(int? id)
+        {
+            var registroFind = await _context.Productos.FirstOrDefaultAsync(s => s.ProductoId == id);
+            registroFind.Imagen = null;
+            _context.Update(registroFind);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
