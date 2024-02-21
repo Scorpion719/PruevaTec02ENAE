@@ -101,35 +101,60 @@ namespace PruevaTec02ENAE.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductoId,Nombre,Precio,Descripcion,Imagen,CategoriaId")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductoId,Nombre,Precio,Descripcion,CategoriaId")] Producto producto, IFormFile imagen)
         {
             if (id != producto.ProductoId)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if (imagen != null && imagen.Length > 0)
             {
-                try
+                using (var memoryStream = new MemoryStream())
                 {
-                    _context.Update(producto);
-                    await _context.SaveChangesAsync();
+                    await imagen.CopyToAsync(memoryStream);
+                    producto.Imagen = memoryStream.ToArray();
+
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductoExists(producto.ProductoId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
             }
-            ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId);
-            return View(producto);
+            else
+            {
+                var registroFind = await _context.Productos.FirstOrDefaultAsync(s => s.ProductoId == producto.ProductoId);
+
+                if (registroFind?.Imagen?.Length > 0)
+                    producto.Imagen = registroFind.Imagen;
+
+                registroFind.Nombre = producto.Nombre;
+                registroFind.Precio = producto.Precio;
+                registroFind.Descripcion = producto.Descripcion;
+                registroFind.CategoriaId = producto.CategoriaId;
+
+                _context.Update(registroFind);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!ProductoExists(producto.ProductoId))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    
+            //}
+            //ViewData["CategoriaId"] = new SelectList(_context.Categorias, "CategoriaId", "Nombre", producto.CategoriaId);
+            //
         }
 
         // GET: Productoes/Delete/5
